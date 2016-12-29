@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="mapavotosApp">
+
+<head>
+    <meta charset="utf-8">
+    <title>Mapa dos Votos - Câmara Municipal de Campinas</title>  
+    <link href="../bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../bower_components/bootstrap/dist/css/bootstrap-theme.min.css" rel="stylesheet">
+    <link href="../bower_components/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <link href="styles/bootstrap-social.css" rel="stylesheet">
+    <link href="styles/mystyles.css" rel="stylesheet">
+    
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCDAjooQkh2ExpXCp5uF_8P8f-bfLzJ2KM"></script>
+    
+    <script>
+        function initialize() { //Define Campinas como centro do mapa
+            var mapOptions = {
+                center: { lat: -22.905556, lng:-47.060833},
+                zoom: 14
+                };
+              // O bloco inteiro abaixo define o estilo do mapa. Tutorial aqui: https://developers.google.com/maps/documentation/javascript/styling#creating_a_styledmaptype  
+                var styles = [
+                 {
+                    featureType: "road",
+                    elementType: "geometry",
+                    stylers: [
+                      { lightness: 100 },
+                      { visibility: "simplified" }
+                    ]
+                  },{
+                    featureType: "road",
+                    elementType: "labels",
+                    stylers: [
+                      { visibility: "off" }
+                    ]
+                  }
+                ];
+                // Fim do estilo.		
+
+            map = new google.maps.Map(document.getElementById('mapa'),mapOptions); //Desenha o mapa na tela
+            map.setOptions({styles: styles});  
+	
+      }
+        var map;	
+        google.maps.event.addDomListener(window, 'load', initialize);
+    </script>
+    
+</head>
+<body>
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container">
+            <div id="navbar" class="navbar-collapse collapse">
+                <ul class="nav navbar-nav pull-right">
+                    <li><a ui-sref="app">
+                        <span class="glyphicon glyphicon-home"
+                         aria-hidden="true"></span>Home</a></li>
+                    <li><a ui-sref="app.aboutus">
+                        <span class="glyphicon glyphicon-info-sign"
+                         aria-hidden="true"></span>Sobre</a></li>
+                    <li><a ui-sref="app.contactus">
+                     <i class="fa fa-envelope-o"></i>Contato</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>  
+    <div id="mapa">
+        
+    </div>
+    <footer>
+    
+    </footer>
+    
+    <script src="../bower_components/angular/angular.min.js"></script>
+    <script>
+        var app = angular.module('mapavotosApp',[]);
+        app.controller('mapaController', function(){
+            
+            var votos=[
+                        {
+                            "local":"l331015",
+                            "nome":"USF - UNIV. SÃO FRANCISCO",
+                            "latitude":"-22.9099038",
+                            "longitude":"-47.0521561",
+                            "11567":"42",
+                            "25000":"37",
+                            "13001":"49",
+                            "50100":"40"
+		                  },
+		                  {
+                            "local":"l331023",
+                            "nome":"COLEGIO PROGRESSO CAMPINEIRO",
+                            "latitude":"-22.9099038",
+                            "longitude":"-47.0521561",
+                            "11567":"72",
+                            "25000":"103",
+                            "13001":"109",
+                            "50100":"113"			
+		                  }
+                     ];
+            this.votos = votos;
+            
+            this.message = "Mapa de Votos de Campinas";
+            
+        });
+        
+    </script>
+
+
+</body>
+
+</html>

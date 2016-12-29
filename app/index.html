@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="mapavotosApp">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Mapa dos Votos - Câmara Municipal de Campinas</title>
+	<link rel="stylesheet" href="https://npmcdn.com/leaflet@1.0.0-rc.3/dist/leaflet.css" />
+
+<!-- build:css styles/main.css -->
+    <link href="../bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../bower_components/bootstrap/dist/css/bootstrap-theme.min.css" rel="stylesheet">
+    <link href="../bower_components/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <link href="styles/bootstrap-social.css" rel="stylesheet">
+    <link href="styles/mystyles.css" rel="stylesheet">
+<!-- endbuild -->
+
+
+</head>
+<body>
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container">
+            <div id="navbar" class="navbar-collapse collapse">
+                <img src="images/logo.png"/>
+                <ul class="nav navbar-nav pull-right">
+                    <li><a ui-sref="app">
+                        <span class="glyphicon glyphicon-home"
+                         aria-hidden="true"></span>Home</a></li>
+                    <li><a ui-sref="app.aboutus">
+                        <span class="glyphicon glyphicon-info-sign"
+                         aria-hidden="true"></span>Sobre</a></li>
+                    <li><a ui-sref="app.contactus">
+                     <i class="fa fa-envelope-o"></i>Contato</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div ng-controller="MapaController" id="mapheader">
+        <div>
+            <form name="Vereador">
+                <label for="selVereador"> Selecione um veredor: </label>
+                    <select name="selVereador" id="repeatSelect" 
+                            ng-model="verSelected" ng-change="selVereador()">
+                        <option ng-repeat="ver in vereadores" value="{{ver.numero}}">
+                            {{ver.nome}}
+                        </option>
+                    </select>
+                    <input type="button" value="Limpa Mapa" ng-click="limpaMapa()">
+                    <input type="button" value="Escolas" ng-click="Escolas()">
+            </form>
+        </div>
+        <div id="mapid">
+        </div>    
+	</div>
+    <footer class="row-footer">
+        <div class="container">
+            <div class="row">             
+                <div class="col-xs-5 col-xs-offset-1 col-sm-2 col-sm-offset-1">
+                    <h5>Links</h5>
+                    <ul class="list-unstyled">
+                        <li><a ui-sref="app">Home</a></li>
+                        <li><a ui-sref="app.aboutus">Sobre</a></li>
+                        <li><a ui-sref="app.contactus">Contato</a></li>
+                    </ul>
+                </div>
+                <div class="col-xs-6 col-sm-5">
+                    <h5>Nosso endereço</h5>
+                    <address>
+		              Rua Luzitana, xxx<br>
+		              Centro, Campinas - SP<br>
+		              <i class="fa fa-phone"></i>: 32730333<br>
+		              <i class="fa fa-envelope"></i>: 
+                         <a href="mailto:contato@minhacampinas.org.br">
+                         contato@minhacampinas.org.br</a>
+                    </address>
+                </div>
+                <div class="col-xs-12 col-sm-4">
+                    <div class="nav navbar-nav" style="padding: 40px 10px;">
+                        <a class="btn btn-social-icon btn-facebook" href="http://www.facebook.com/minhacampinas"><i class="fa fa-facebook"></i></a>
+                        <a class="btn btn-social-icon btn-twitter" href="http://twitter.com/minhacampinas"><i class="fa fa-twitter"></i></a>
+                        <a class="btn btn-social-icon btn-youtube" href="http://youtube.com/minhacampinas"><i class="fa fa-youtube"></i></a>
+                        <a class="btn btn-social-icon" href="mailto:"><i class="fa fa-envelope-o"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+	<script src="https://npmcdn.com/leaflet@1.0.0-rc.3/dist/leaflet.js"></script>
+<!-- build:js scripts/main.js -->
+    <script src="../bower_components/angular/angular.min.js"></script>
+    <script src="scripts/app.js"></script>
+    <script src="scripts/controllers.js"></script>
+    <script src="scripts/services.js"></script>
+<!-- endbuild -->
+</body>
+</html>
