@@ -1,16 +1,16 @@
 {
-  "name": "mapavereadores",
+  "name": "conFusion",
   "version": "1.0.0",
-  "description": "Mapa geográfico dos votos dos vereadores eleitos em Campinas",
+  "description": "Website for an awesome restaurant",
   "main": "index.html",
   "moduleType": [],
   "keywords": [
-    "politica",
-    "vereador",
-    "vereadora"
+    "conFusion",
+    "Fusion",
+    "Restaurant"
   ],
   "authors": [
-    "André Luís Bordignon e Minha Campinas"
+    "Jogesh Muppala"
   ],
   "license": "MIT",
   "homepage": "",

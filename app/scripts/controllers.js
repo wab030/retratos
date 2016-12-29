@@ -1,107 +1,196 @@
 'use strict';
 
-angular.module('mapavotosApp')
+angular.module('retratosApp')
 
-    .controller('MapaController', ['$scope', 'mapaFactory', function($scope, mapaFactory){
-        
-        var mymap = L.map('mapid').setView([-22.905556, -47.060833], 11);
+        .controller('MenuController', ['$scope', 'menuFactory', function($scope, menuFactory) {
+            
+            $scope.tab = 1;
+            $scope.filtText = '';
+            $scope.showDetails = false;
 
-        L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpandmbXliNDBjZWd2M2x6bDk3c2ZtOTkifQ._QA7i5Mpkd_m30IGElHziw', {
-            maxZoom: 20,
-            attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
-                '<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
-                'Imagery © <a href="http://mapbox.com">Mapbox</a>',
-            id: 'mapbox.streets'
-        }).addTo(mymap); 
-
-        //Desenha os limites de Campinas na tela. Ref.:http://leafletjs.com/examples/geojson/
-        $scope.coordCamp = mapaFactory.getCoordCamp();
+            $scope.showMenu = false;
+            $scope.message = "Loading...";
+            //$scope.dishes=menuFactory.getDishes().query();
+            menuFactory.getDishes().query(
+                function(response){
+                    $scope.dishes = response;
+                    $scope.showMenu = true;
+                },
+                function(response){
+                    $scope.message = "Error "+response.status+" " + response.statusText;
+                }
+            );
+            
+            $scope.promotion = menuFactory.getPromotion(0);
+           
+            $scope.select = function(setTab) {
+                $scope.tab = setTab;
                 
-        var myStyle = {
-                "color": "#ff7800",
-                "weight": 1,
-                "opacity": 0.15
+                if (setTab === 2) {
+                    $scope.filtText = "appetizer";
+                }
+                else if (setTab === 3) {
+                    $scope.filtText = "mains";
+                }
+                else if (setTab === 4) {
+                    $scope.filtText = "dessert";
+                }
+                else {
+                    $scope.filtText = "";
+                }
             };
-        L.geoJSON($scope.coordCamp, {
-                style: myStyle
-            }).addTo(mymap);
-        
-        //--------------------------------------------
-        
-        $scope.message = "Mapa de Votos de Campinas";
-        
-        $scope.votos = mapaFactory.getVotos();
-        
-        $scope.vereadores = mapaFactory.getVereadores();
-        
-        // *** vereador que será selecionado.
-        $scope.verSelected = "";
-        $scope.latitude = -22.905556;
-        $scope.longitude = -22.905556;
-        $scope.raio = 0;
-        $scope.marker = [];
-        $scope.circle = [];
-        $scope.mostraescolas = false;
-        $scope.i = 0;
-        $scope.escolaIcon = L.icon({
-                iconUrl: 'images/escola.png',
-                shadowUrl: 'images/escola.png',
-                iconSize:     [5, 4], // size of the icon
-                shadowSize:   [0, 0] // size of the shadow
-                
-            });
-        
-        $scope.selVereador = function(){  
-            /*$scope.latitude = $scope.latitude + 0.000003;
-            var circle = L.circle([$scope.latitude, -47.060833], 500, {
-    		color: 'red',
-    		fillColor: '#f03',
-    		fillOpacity: 0.5
-			}).addTo(mymap);    */
 
-            //for($scope.i=0; $scope.i<$scope.votos.length; $scope.i++){
-            for($scope.i=0; $scope.i<$scope.votos.length; $scope.i++){
-                $scope.latitude = parseFloat($scope.votos[$scope.i].latitude);
-                $scope.longitude = parseFloat($scope.votos[$scope.i].longitude);
+            $scope.isSelected = function (checkTab) {
+                return ($scope.tab === checkTab);
+            };
+    
+            $scope.toggleDetails = function() {
+                $scope.showDetails = !$scope.showDetails;
+            };            
+            
+        }])
+
+        .controller('ContactController', ['$scope', function($scope) {
+
+            $scope.feedback = {mychannel:"", firstName:"", lastName:"", agree:false, email:"" };
+            
+            var channels = [{value:"tel", label:"Tel."}, {value:"Email",label:"Email"}];
+            
+            $scope.channels = channels;
+            $scope.invalidChannelSelection = false;
+                        
+        }])
+
+        .controller('FeedbackController', ['$scope','feedbackFactory', function($scope, feedbackFactory) {
+            
+            $scope.feedback = {id:0, mychannel:"", firstName:"", lastName:"", agree:false, email:"" };
+            /*feedbackFactory.getFeedbacks().query(
+                function(response){
+                    $scope.feedbacks = response;
+                },
+                function(response){
+                    $scope.message = "Error "+response.status+" " + response.statusText;
+                }
+            );*/
+            
+            
+            $scope.sendFeedback = function() {
+                        
+                if ($scope.feedback.agree && ($scope.feedback.mychannel === "")) {
+                    $scope.invalidChannelSelection = true;
+                    console.log('incorrect');
+                }
+                else {
+                    //$scope.dish.comments.push($scope.comment);
+                    //menuFactory.getDishes().update({id:$scope.dish.id},$scope.dish);   
+                    
+                    //$scope.feedbacks.push($scope.feedback);
+
+                    feedbackFactory.getFeedbacks().update({id:$scope.feedback.id},$scope.feedback);
+                    //feedbackFactory.getFeedbacks().save({id:$scope.feedback.id},$scope.feedback);
                 
-                $scope.raio = eval("$scope.votos["+$scope.i+"]"+".n"+$scope.verSelected);
-                $scope.raio = $scope.raio * 3;
+                    $scope.invalidChannelSelection = false;
+                    $scope.feedback = {mychannel:"", firstName:"", lastName:"", agree:false, email:"" };
+                    $scope.feedback.mychannel="";
+                    $scope.feedbackForm.$setPristine();
+                    console.log($scope.feedback);
+                }
+            };
+        }])
+
+        .controller('DishDetailController', ['$scope', '$stateParams', 'menuFactory', function($scope, $stateParams, menuFactory) {
             
-                $scope.circle[$scope.i] = L.circle([$scope.latitude, $scope.longitude], $scope.raio, {
-    		      color: 'red',
-    		      fillColor: '#f03',
-                  weight: 1,
-    		      fillOpacity: 0.2
-			     }).addTo(mymap);
-                $scope.circle[$scope.i].bindPopup($scope.votos[$scope.i].nome + " " + $scope.raio+" votos").openPopup();
-                
-            }     
-        };
-        
-        $scope.limpaMapa = function(){
-            for($scope.i=0; $scope.i<$scope.votos.length; $scope.i++){
-                mymap.removeLayer($scope.marker[$scope.i]);
-                mymap.removeLayer($scope.circle[$scope.i]);
-            }
+            $scope.dish = {};
+            $scope.showDish = false;
+            $scope.message="Loading...";
+            $scope.dish = menuFactory.getDishes().get({id:parseInt($stateParams.id,10)})
+            .$promise.then(
+                function(response){
+                    $scope.dish = response;
+                    $scope.showDish = true;
+                },
+                function(response){
+                    $scope.message = "Error: "+response.status + " " + response.statusText;
+                }
+            );
             
-        };
-        
-        $scope.Escolas = function(){
+        }])
+
+        .controller('DishCommentController', ['$scope', 'menuFactory', function($scope, menuFactory) {
             
-            if($scope.mostraescolas){ 
-                for($scope.i=0; $scope.i<$scope.votos.length; $scope.i++){
-                    mymap.removeLayer($scope.marker[$scope.i]);
-                } 
-                $scope.mostraescolas = false;
-            } else{
-                for($scope.i=0; $scope.i<$scope.votos.length; $scope.i++){
-                    $scope.latitude = parseFloat($scope.votos[$scope.i].latitude);
-                    $scope.longitude = parseFloat($scope.votos[$scope.i].longitude);
-                    $scope.marker[$scope.i] = L.marker([$scope.latitude, $scope.longitude]).addTo(mymap);
-                }    
-                $scope.mostraescolas = true;
-            }
+            $scope.comment = {rating:5, comment:" ", author:"", date:""};
+            $scope.submitComment = function () {
+                $scope.comment.date = new Date().toISOString();
+                console.log($scope.comment);
+                $scope.dish.comments.push($scope.comment);
+                menuFactory.getDishes().update({id:$scope.dish.id},$scope.dish);
             
-        };
+                $scope.commentForm.$setPristine();    
+                $scope.comment = {rating:5, comment:"", author:"", date:""};
+            };
+        }])
+
+        // implement the IndexController and About Controller here
+        .controller('IndexController', ['$scope','menuFactory','corporateFactory', function($scope, menuFactory, corporateFactory) {
             
-    }]);
+            $scope.message = "Loading...";
+            $scope.showPromotion = false;
+            $scope.featured = menuFactory.getPromotion().get({id:0})
+            .$promise.then(
+                function(response){
+                    $scope.promotion = response;
+                    $scope.showPromotion=true;
+                },
+                function(response){
+                    $scope.message = "Error: "+response.status + " " + response.statusText;
+                }
+            );               
+            
+            //$scope.leader = corporateFactory.getLeader(1);
+            $scope.message = "Loading...";
+            $scope.showLeader = false;
+            $scope.leader = corporateFactory.getLeaders().get({id:0})
+            .$promise.then(
+                function(response){
+                    $scope.leader = response;
+                    $scope.showLeader=true;
+                },
+                function(response){
+                    $scope.message = "Error: "+response.status + " " + response.statusText;
+                }
+            );               
+                       
+            $scope.showDish = false;
+            $scope.message = "Loading...";
+            $scope.featured = menuFactory.getDishes().get({id:0})
+            .$promise.then(
+                function(response){
+                    $scope.featured = response;
+                    $scope.showDish=true;
+                },
+                function(response){
+                    $scope.message = "Error: "+response.status + " " + response.statusText;
+                }
+            );   
+        }])
+
+        .controller('AboutController', ['$scope','corporateFactory', function($scope, corporateFactory) {
+            
+            //$scope.leadership = corporateFactory.getLeaders();
+            $scope.showLeaders = false;
+            $scope.message = "Loading...";
+
+            corporateFactory.getLeaders().query(
+                function(response){
+                    $scope.leadership = response;
+                    $scope.showLeaders = true;
+                },
+                function(response){
+                    $scope.message = "Error "+response.status+" " + response.statusText;
+                }
+            );
+            
+        }])
+
+
+;
