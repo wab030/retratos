@@ -15,48 +15,50 @@
 }
 .jumbotron {
   margin: 0px auto;
-  padding: 35px 30px;
-  background: #7986CB;
-  color: floralwhite;
+  padding: 0px 10px;
+  font-family: Lucida Console, Monaco5, monospace;
+  background: white;
+  color: #FA8072;
 }
 .carousel {
   background: #1a237e;
 }
 .carousel .item {
-  height: 300px;
+  height: 400px;
 }
 .carousel .item img {
   left: 0;
-  min-height: 300px;
+  min-height: 400px;
   position: absolute;
   top: 0;
 }
 .navbar-inverse {
-  background: #303f9f;
+  height: 5px;
+  background: #ffffff;
   color: #ffffff;
 }
 .navbar-inverse .navbar-nav > .active > a {
-  background: #1a237e;
+  background: #ffffff;
   color: #ffffff;
 }
 .navbar-inverse .navbar-nav > .active > a:hover {
-  background: #1a237e;
+  background: #ffffff;
   color: #ffffff;
 }
 .navbar-inverse .navbar-nav > .active > a:focus {
-  background: #1a237e;
+  background: #ffffff;
   color: #ffffff;
 }
 .navbar-inverse .navbar-nav > .open > a {
-  background: #1a237e;
+  background: #ffffff;
   color: #ffffff;
 }
 .navbar-inverse .navbar-nav > .open > a:hover {
-  background: #1a237e;
+  background: #ffffff;
   color: #ffffff;
 }
 .navbar-inverse .navbar-nav > .open > a:focus {
-  background: #1a237e;
+  background: #ffffff;
   color: #ffffff;
 }
 .navbar-inverse .navbar-nav .open .dropdown-menu > li > a {
@@ -77,7 +79,7 @@ address {
 }
 body {
   align: center;
-  padding: 50px 0px 0px 0px;
+  padding: 0px 0px 0px 0px;
   z-index: 0;
 }
 .tab-content {
