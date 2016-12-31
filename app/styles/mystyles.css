@@ -10,18 +10,19 @@
 }
 .row-footer {
   margin: 0px auto;
-  padding: 20px 0px;
+  padding: 10px 0px;
   background-color: #AfAfAf;
 }
 .jumbotron {
-  margin: 0px auto;
-  padding: 0px 10px;
-  font-family: Lucida Console, Monaco5, monospace;
-  background: white;
-  color: #FA8072;
+  background-image: url(../images/banner.png);
+  margin: 5px auto;
+  height: 195px;
+  padding: 0px 0px;
+  font-family: Laksaman;
+  color: white;
 }
 .carousel {
-  background: #1a237e;
+  padding: 5px 5px 5px 5px;
 }
 .carousel .item {
   height: 400px;
