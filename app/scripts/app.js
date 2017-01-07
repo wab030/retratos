@@ -13,7 +13,6 @@ angular.module('retratosApp', ['ui.router','ngResource'])
                     },
                     'content': {
                         templateUrl : 'views/home.html',
-                        controller  : 'IndexController'
                     },
                     'footer': {
                         templateUrl : 'views/footer.html',
@@ -28,7 +27,6 @@ angular.module('retratosApp', ['ui.router','ngResource'])
                 views: {
                     'content@': {
                         templateUrl : 'views/aboutus.html',
-                        controller  : 'AboutController'                  
                     }
                 }
             })
@@ -39,30 +37,7 @@ angular.module('retratosApp', ['ui.router','ngResource'])
                 views: {
                     'content@': {
                         templateUrl : 'views/contactus.html',
-                        controller  : 'ContactController'                  
                     }
-                }
-            })
-
-            // route for the menu page
-            .state('app.menu', {
-                url: 'menu',
-                views: {
-                    'content@': {
-                        templateUrl : 'views/menu.html',
-                        controller  : 'MenuController'
-                    }
-                }
-            })
-
-            // route for the dishdetail page
-            .state('app.dishdetails', {
-                url: 'menu/:id',
-                views: {
-                    'content@': {
-                        templateUrl : 'views/dishdetail.html',
-                        controller  : 'DishDetailController'
-                   }
                 }
             });
     

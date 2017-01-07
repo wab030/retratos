@@ -1,0 +1,56 @@
+//'use strict';
+
+angular.module('retratosApp')
+
+    .controller('ContactController', ['$scope', '$http', function($scope, $http) {
+            
+            $scope.feedback = {id:0, mychannel:"", firstName:"", lastName:"", agree:false, email:"" };
+                    
+            $scope.sendFeedback = function() {
+                        
+                if ($scope.feedback.agree && ($scope.feedback.mychannel === "")) {
+                    $scope.invalidChannelSelection = true;
+                    console.log('incorrect');
+                }
+                else {
+                    
+                    //console.log("Testando feedback");
+                    //console.log($scope.feedback);
+                    console.log("Iniciando envio de e-mail");
+                    
+                    //==================== Enviando o e-mail
+                    
+                    /*var url = "https://api.mailgun.net/v3/sandbox823fe8c1c86244208c44f838e1304159.mailgun.org/messages";
+                    var dataFields = {
+                        to: "albordignon@gmail.com",
+                        subject: "subject",
+                        text: "text",
+                        from: "postmaster@sandbox823fe8c1c86244208c44f838e1304159.mailgun.org",
+                    };
+                    
+                    var req = {
+                        method : 'POST',
+                        url: url,
+                        headers : {
+                            'Content-Type': 'application/x-www-form-urlencoded',
+                            'Authorization' : 'Basic api:key-f52e7ded779f70eba9a0483b8e5deac2'
+                        },
+                        data: dataFields
+                    };
+                    $http(req).then(function(data){
+                        console.log(data);
+                        console.log("Envio de e-mail OK");
+                    }, function(data){console.log("Erro ="); console.log(data); console.log("Erro no envio de e-mail 4");});*/
+                    //==============
+                    
+                    
+                
+                    $scope.invalidChannelSelection = false;
+                    $scope.feedback = {mychannel:"", firstName:"", lastName:"", agree:false, email:"" };
+                    $scope.feedback.mychannel="";
+                    $scope.feedbackForm.$setPristine();
+                    console.log($scope.feedback);
+                }
+            };
+        }])
+;
