@@ -1,0 +1,79 @@
+//'use strict';
+
+angular.module('retratosApp')
+
+        .controller('FotosController',['$scope', function($scope){
+            $scope.fotoscasamento = [
+                {
+                    "id": 0,
+                    "name": "foto1",
+                    "image": "images/casamentos/casa02.jpg"      
+                },
+                {
+                    "id": 0,
+                    "name": "foto2",
+                    "image": "images/casamentos/casa02.jpg"      
+                },
+                {
+                    "id": 0,
+                    "name": "foto3",
+                    "image": "images/casamentos/casa02.jpg"      
+                }
+            ]
+            
+            $scope.message = "Teste";
+            
+        }])
+
+
+
+        .controller('ContactController', ['$scope', '$http', function($scope, $http) {
+            
+            $scope.user = {id:0, mychannel:"", firstName:"", lastName:"", agree:false, email:"" };
+            
+            $scope.user.nome = "";
+            $scope.user.fone = "";
+            $scope.user.email = "";
+            $scope.user.mensagem = "";
+                    
+            $scope.sendEmail = function() {
+                        
+               console.log("Iniciando envio de e-mail");
+                    
+                    //==================== Enviando o e-mail
+                    
+                $http({
+                        //url: 'http://localhost/retratos/mail.php',
+                        //url:'http://www.retratosdointerior.com.br/mail.php',
+                        url: 'mail.php',
+                        method: 'POST',
+                        data: {
+                            'nome': $scope.user.nome,
+                            'email': $scope.user.email,
+                            'fone': $scope.user.fone,
+                            'mensagem': $scope.user.mensagem,
+                        },
+                        headers: {
+                            'Accept': 'application/json',
+                            'Content-Type': 'application/json'
+                        }
+                }).
+                success(function (data){
+                    $scope.success = true;
+                    $scope.user = {};
+                }).
+                error(function (data) {
+                    $scope.error = true;
+                    
+                }); 
+                //==============
+                $scope.user.nome = "";
+                $scope.user.fone = "";
+                $scope.user.email = "";
+                $scope.user.mensagem = "";
+                $scope.feedbackForm.$setPristine();
+                console.log($scope.user.nome);
+                
+            };
+        }])
+;
